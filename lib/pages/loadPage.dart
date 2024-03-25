@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:tyt/pages/homePage.dart';
 
 class LoadPage extends StatelessWidget {
   const LoadPage({super.key});
@@ -40,7 +41,15 @@ class LoadPage extends StatelessWidget {
             const SizedBox(
               height: 50,
             ),
-            ElevatedButton(onPressed: () {}, child: const Text("Start"))
+            ElevatedButton(onPressed: () {
+              Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => HomePage(),
+                      ),
+                    );
+              
+            }, child: const Text("Start"))
           ],
         ),
       ),

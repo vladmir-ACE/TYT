@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tyt/services/Translate.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,6 +12,9 @@ class _HomePageState extends State<HomePage> {
   TextEditingController textControl = TextEditingController();
   TextEditingController textTranslateControl = TextEditingController();
 
+  TranslateService translateService = TranslateService();
+
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +37,14 @@ class _HomePageState extends State<HomePage> {
                       TextField(
                         controller: textControl,
                         maxLines: 10,
-                        decoration: const InputDecoration.collapsed(
-                            hintText: "Enter your text here"),
+                        decoration: const InputDecoration(
+                          hintText: "Enter your text here",
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                        ),
                       )
                     ],
                   ),
@@ -49,24 +59,37 @@ class _HomePageState extends State<HomePage> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                         foregroundColor: Colors.white,
-                        textStyle: TextStyle(color: Colors.white)),
-                    onPressed: () {},
-                    child: Text("Translate your Text"),
+                        textStyle: const TextStyle(color: Colors.white)),
+                    onPressed: () async {
+                      // start loading
+                      setState(() => loading = true);
+                      String text = textControl.text;
+                      String result =
+                          await translateService.translateText(text);
+                          // fisnish loading and replace translate text 
+                      setState(() {
+                        textTranslateControl.text = result;
+                        loading = false;
+                      });
+                    },
+                    child: loading?const CircularProgressIndicator(
+                     
+                      color: Colors.white,
+                    ):const Text("Translate your Text"),
                   ),
                 ),
               ),
-                Padding(
+              Padding(
                 padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
                 child: Card(
                   elevation: 10,
                   child: Column(
                     children: [
-                      Text("TRANSLATE TEXT"),
+                      Text("TRANSLATE TEXT IN FRENCH"),
                       TextField(
                         readOnly: true,
                         controller: textTranslateControl,
                         maxLines: 10,
-                       
                       )
                     ],
                   ),
